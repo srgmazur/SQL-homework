@@ -11,7 +11,6 @@ LIMIT
   100
 ---
 
-
 select
   name as product_name,
   price as product_price
@@ -21,3 +20,8 @@ order by
   price desc
 limit
   5
+----
+select
+  price :: varchar
+from
+  products
