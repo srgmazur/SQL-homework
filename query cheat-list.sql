@@ -47,3 +47,13 @@ from
 order by
   birth_year desc,
   courier_id
+
+-- Для первых 200 записей из таблицы orders выведите информацию в следующем виде (обратите внимание на пробелы):
+-- Заказ № [id_заказа] создан [дата]
+-- Полученную колонку назовите order_info.
+
+select concat_ws (' ', 'Заказ №', order_id, 'создан', creation_time::date) as order_info 
+from
+  orders
+limit
+  200
