@@ -162,3 +162,18 @@ where
   split_part(name,' ',1) = 'чай' OR length(name) = 5
 order by
   product_id
+
+-- Выберите из таблицы products id и наименования только тех товаров, названия которых начинаются на букву «с» и содержат только одно слово.
+-- Результат должен быть отсортирован по возрастанию id товара.
+-- Поля в результирующей таблице: product_id, name
+
+select
+  product_id,
+  name
+from
+  products
+where
+  name like 'с%' and not name like '% %'
+order by
+  product_id
+  
