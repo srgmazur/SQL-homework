@@ -196,3 +196,19 @@ where
   name like '%чай%' and price >= '60' and not name like '%гриб%'
 order by
   product_id
+
+-- Из таблицы user_actions выведите всю информацию о действиях пользователей с id 170, 200 и 230 за период с 25 августа
+-- по 4 сентября 2022 года включительно. Результат отсортируйте по убыванию id заказа — то есть от самых поздних действий
+-- к самым первым. Поля в результирующей таблице: user_id, order_id, action, time
+select
+  user_id,
+  order_id,
+  action,
+  time
+from
+  user_actions
+where
+  user_id in(170, 200, 230)
+  and time between '2022-08-25' and '2022-09-05'
+order by
+  order_id desc
