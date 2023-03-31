@@ -228,3 +228,15 @@ order by
 limit
   50
   
+  -- Из таблицы user_actions получите id всех заказов, сделанных пользователями сервиса в августе 2022 года.
+-- Результат отсортируйте по возрастанию id заказа.
+-- Поле в результирующей таблице: order_id
+
+select
+  order_id
+from
+  user_actions
+ where
+  action = 'create_order' and date_part('month', time) = '08' and date_part('year', time) = '2022'
+order by
+  order_id
