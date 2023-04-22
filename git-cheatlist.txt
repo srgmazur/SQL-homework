@@ -1,0 +1,4 @@
+The git status command can be used to obtain a summary of which files have changes that are staged for the next commit.
+
+by using git-add[1] to incrementally "add" changes to the index before using the commit command (Note: even modified files must be "added");
+

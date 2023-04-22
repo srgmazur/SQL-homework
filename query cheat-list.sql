@@ -240,4 +240,15 @@ from
   action = 'create_order' and date_part('month', time) = '08' and date_part('year', time) = '2022'
 order by
   order_id
--- new task
+
+-- Примените DISTINCT сразу к двум колонкам таблицы courier_actions и отберите уникальные пары значений courier_id и order_id.
+-- Результат отсортируйте сначала по возрастанию id курьера, затем по возрастанию id заказа.
+
+select distinct
+  courier_id,
+  order_id
+from
+  courier_actions
+order by
+  courier_id,
+  order_id
