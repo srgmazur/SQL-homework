@@ -252,3 +252,11 @@ from
 order by
   courier_id,
   order_id
+
+-- Посчитайте максимальную и минимальную цены товаров в таблице products. Поля назовите соответственно max_price, min_price.
+-- Поля в результирующей таблице: max_price, min_price
+select
+  max(price) as max_price,
+  min(price) as min_price
+from
+  products
