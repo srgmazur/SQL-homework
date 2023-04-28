@@ -260,3 +260,43 @@ select
   min(price) as min_price
 from
   products
+
+-- Как вы помните, в таблице users у некоторых пользователей не были указаны их даты рождения.
+-- Посчитайте в одном запросе количество всех записей в таблице и количество только тех записей, для которых в колонке birth_date указана дата рождения.
+-- Колонку с общим числом записей назовите dates, а колонку с записями без пропусков — dates_not_null.
+
+select
+  count(birth_date) as dates_not_null,
+  count(*) as dates
+from
+  users
+
+-- Посчитайте количество всех значений в колонке user_id в таблице user_actions, а также количество уникальных значений в этой колонке (т.е. количество уникальных пользователей сервиса).
+-- Колонку с первым полученным значением назовите users, а колонку со вторым — unique_users.
+
+select
+  count(user_id) as users,
+  count(DISTINCT user_id) as unique_users
+from
+  user_actions
+
+-- Посчитайте количество курьеров женского пола в таблице couriers. Полученный столбец с одним значением назовите couriers.
+select
+  count(DISTINCT courier_id) as couriers
+from
+  couriers
+where
+  sex = 'female'
+
+-- Рассчитайте время, когда были совершены первая и последняя доставки заказов в таблице courier_actions.
+-- Колонку с временем первой доставки назовите first_delivery, а колонку с временем последней — last_delivery.
+-- Поля в результирующей таблице: first_delivery, last_delivery
+
+select
+--  count(time) as couriers
+action,
+order_id
+from
+  courier_actions
+where
+  action = 'deliver_order'
