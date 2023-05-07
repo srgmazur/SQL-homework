@@ -378,9 +378,47 @@ from
 select
     round(avg(
         CASE 
-        WHEN (name like '%чай%' and not name like '%гриб%' and not name like '%иван-чай%') OR name like '%кофе%' THEN price
-        else NULL
+        WHEN name like '%чай%' and not name like '%гриб%' and not name like '%иван-чай%' then price
+        when name like '%кофе%' THEN price
+        else null
         END
     ), 2) as avg_price
 from
     products
+
+-- Воспользуйтесь функцией AGE и рассчитайте разницу в возрасте между самым старым и самым молодым пользователями мужского пола в таблице users. 
+-- Разницу в возрасте выразите количеством лет, месяцев и дней, переведя её в тип VARCHAR. 
+-- Колонку с посчитанным значением назовите age_diff.
+-- Поле в результирующей таблице: age_diff
+
+select
+   age(max(birth_date), min(birth_date))::VARCHAR as age_diff
+from
+    users
+where
+    sex = 'male'
+
+-- Рассчитайте среднее количество товаров в заказах из таблицы orders, которые пользователи оформляли по выходным дням 
+-- (суббота и воскресенье) в течение всего времени работы сервиса.
+-- Полученное значение округлите до двух знаков после запятой. Колонку с ним назовите avg_order_size.
+-- Поле в результирующей таблице: avg_order_size
+
+select
+   round(avg(array_length(product_ids, 1)), 2) as avg_order_size
+from
+    orders
+where
+    DATE_PART('dow', creation_time) = 6 OR DATE_PART('dow', creation_time) = 0
+
+-- На основе данных в таблице user_actions посчитайте количество уникальных пользователей сервиса, количество уникальных заказов, 
+-- поделите одно на другое и выясните, сколько заказов приходится на одного пользователя.
+-- В результирующей таблице отразите все три значения — поля назовите соответственно unique_users, unique_orders, orders_per_user.
+-- Показатель числа заказов на пользователя округлите до двух знаков после запятой.
+-- Поля в результирующей таблице: unique_users, unique_orders, orders_per_user
+
+select
+   count(DISTINCT user_id) as unique_users,
+   count(DISTINCT order_id) as unique_orders,
+   round((count(DISTINCT order_id)::decimal / count(DISTINCT user_id)), 2) as orders_per_user
+from
+    user_actions
