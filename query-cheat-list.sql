@@ -293,10 +293,32 @@ where
 -- Поля в результирующей таблице: first_delivery, last_delivery
 
 select
---  count(time) as couriers
-action,
-order_id
+  min(time) as first_delivery,
+  max(time) as last_delivery
 from
   courier_actions
 where
   action = 'deliver_order'
+
+-- Представьте, что один из пользователей сервиса сделал заказ, в который вошли одна пачка сухариков, одна пачка чипсов и один энергетический напиток. Посчитайте стоимость такого заказа.
+-- Колонку с рассчитанной стоимостью заказа назовите order_price.
+-- Для расчётов используйте таблицу products.
+-- Поле в результирующей таблице: order_price
+
+select
+  sum(price) as order_price
+from
+  products
+where
+  name = 'сухарики' OR name= 'чипсы' OR name = 'энергетический напиток'
+
+-- Посчитайте количество заказов в таблице orders с девятью и более товарами. Для этого воспользуйтесь функцией array_length,
+-- отфильтруйте данные по количеству товаров в заказе и проведите агрегацию. Полученный столбец назовите orders.
+
+Поле в результирующей таблице: orders
+select
+  count (order_id) as orders
+from
+  orders
+where
+  array_length (product_ids, 1) >= 9
