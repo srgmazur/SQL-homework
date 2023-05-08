@@ -422,3 +422,29 @@ select
    round((count(DISTINCT order_id)::decimal / count(DISTINCT user_id)), 2) as orders_per_user
 from
     user_actions
+
+-- Посчитайте, сколько пользователей никогда не отменяли свой заказ. Для этого из общего числа всех уникальных пользователей 
+-- отнимите число уникальных пользователей, которые хотя бы раз отменяли заказ. Подумайте, какое условие необходимо указать в FILTER, 
+-- чтобы получить корректный результат.
+-- Полученный столбец назовите users_count.
+-- Поле в результирующе таблице: users_count
+
+select
+   (count(distinct user_id) - (count(distinct user_id) filter (where action = 'cancel_order'))) as users_count
+from
+    user_actions
+
+-- Посчитайте общее количество заказов в таблице orders, количество заказов с пятью и более товарами и найдите долю заказов с пятью и более товарами
+-- в общем количестве заказов. В результирующей таблице отразите все три значения — поля назовите
+-- соответственно orders, large_orders, large_orders_share.
+-- Долю заказов с пятью и более товарами в общем количестве товаров округлите до двух знаков после запятой.
+-- Поля в результирующей таблице: orders, large_orders, large_orders_share
+-- При расчёте доли не забудьте хотя бы одно из значений предварительно привести к типу DECIMAL.
+-- Также помните, что использовать в расчётах алиасы новых колонок нельзя.
+
+select
+   count(order_id) as orders,
+   count(order_id) filter (where array_length(product_ids, 1) >= 5) as large_orders,
+   round((count(order_id) filter (where array_length(product_ids, 1) >= 5))::decimal / (count(order_id)), 2) as large_orders_share
+from
+    orders
