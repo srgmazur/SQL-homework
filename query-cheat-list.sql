@@ -448,3 +448,58 @@ select
    round((count(order_id) filter (where array_length(product_ids, 1) >= 5))::decimal / (count(order_id)), 2) as large_orders_share
 from
     orders
+
+-- С помощью группировки посчитайте количество курьеров мужского и женского пола в таблице couriers. Новую колонку с числом курьером назовите couriers_count.
+-- Результат отсортируйте по этой колонке по возрастанию.
+-- Поля в результирующей таблице: sex, couriers_count
+select
+  sex,
+  count(distinct courier_id) as couriers_count
+from
+  couriers
+group by
+  sex
+
+-- Посчитайте максимальный возраст пользователей мужского и женского пола в таблице users. Возраст измерьте количеством полных лет. 
+-- Новую колонку с возрастом назовите max_age. Результат отсортируйте по новой колонке по возрастанию возраста.
+-- Поля в результирующей таблице: sex, max_age
+
+select
+  sex,
+  max(date_part('year', AGE(current_date, birth_date))) as max_age
+from
+  users
+group by
+  sex
+
+-- Разбейте пользователей из таблицы users на группы по возрасту (возраст измеряем количеством полных лет) и посчитайте число пользователей каждого возраста. 
+-- Колонку с возрастом назовите age, а колонку с числом пользователей — users_count. Отсортируйте полученный результат по возрастанию возраста. 
+-- Не забудем и про тех пользователей, у которых вместо возраста будет пропуск, для этой группы также подсчитаем число пользователей.
+-- Поля в результирующей таблице: age, users_count
+select
+  count(distinct user_id) as users_count,
+  date_part('year', AGE(current_date, birth_date)) as age
+from
+  users
+group by
+  age
+order by
+    age
+
+-- Разбейте пользователей из таблицы users на группы по возрасту (возраст измеряем количеством полных лет) и посчитайте число пользователей каждого возраста.
+-- Колонку с возрастом назовите age, а колонку с числом пользователей — users_count. Отсортируйте полученный результат по возрастанию возраста.
+-- Не забудем и про тех пользователей, у которых вместо возраста будет пропуск, для этой группы также подсчитаем число пользователей.
+-- Поля в результирующей таблице: age, users_count
+select
+  count(distinct user_id) as users_count,
+  sex,
+  date_part('year', AGE(current_date, birth_date)) as age
+from
+  users
+where
+    birth_date is not NULL
+group by
+  age,
+  sex
+order by
+  age, sex
