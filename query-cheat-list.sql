@@ -503,3 +503,35 @@ group by
   sex
 order by
   age, sex
+
+-- Используя функцию DATE_TRUNC, посчитайте, сколько заказов было сделано и сколько было отменено в каждом месяце. 
+-- Расчёты проводите по таблице user_actions. Колонку с усечённой датой назовите month, колонку с количеством заказов — orders_count. 
+-- Результат отсортируйте сначала по месяцам — по возрастанию, затем по типу действия — тоже по возрастанию.
+-- Поля в результирующей таблице: month, action, orders_count
+
+select
+  date_trunc('month', time) as month,
+  action,
+  count(order_id) as orders_count
+from
+  user_actions
+group by
+  month, action
+order by
+  month, action
+
+-- Посчитайте количество товаров в каждом заказе из таблицы orders, примените к этим значениям группировку и 
+-- посчитайте количество заказов в каждой группе. Выведите две колонки: количество товаров в заказе и число заказов 
+-- с таким количеством. Колонки назовите соответственно order_size и orders_count. Результат отсортируйте по возрастанию 
+-- числа товаров в заказе.
+-- Поля в результирующей таблице: order_size, orders_count
+
+select
+  array_length(product_ids, 1) as order_size,
+  count(order_id) as orders_count
+from
+  orders
+group by
+    order_size
+order by
+    order_size
